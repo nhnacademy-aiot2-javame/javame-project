@@ -38,12 +38,15 @@ jobs:
           cat changed-modules.txt >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Run SonarQube scan for changed module
-        if: steps.changes.outputs.module != ''
+      - name: Run SonarQube scans for each changed module
+        if: steps.changes.outputs.modules != ''
         run: |
-          mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=javame-project \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.inclusions=${{ steps.changes.outputs.module }}/** \
-            -Dsonar.coverage.jacoco.xmlReportPaths=${{ steps.changes.outputs.module }}/target/site/jacoco/jacoco.xml
+          while IFS= read -r module; do
+            echo "[INFO] Running SonarQube scan for changed module: $module"
+            mvn -B clean verify sonar:sonar \
+              -Dsonar.projectKey=javame-project \
+              -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+              -Dsonar.inclusions=$module/** \
+              -Dsonar.coverage.jacoco.xmlReportPaths=$module/target/site/jacoco/jacoco.xml
+          done < changed-modules.txt
