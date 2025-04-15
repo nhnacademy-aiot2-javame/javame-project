@@ -3,8 +3,7 @@ name: SonarQube Analyze Changed Module
 on:
   push:
     branches:
-      - main
-  pull_request:
+      - main #main 브랜치에 push 시 이벤트 트리거
 
 jobs:
   detect-and-analyze:
@@ -13,7 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # 전체 커밋 내역을 가져옴.
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -24,18 +23,21 @@ jobs:
       - name: Detect changed module
         id: changes
         run: |
-          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
+          echo "[DEBUG] Event: ${{ github.event_name }}"
           
-          echo "[DEBUG] Base ref: ${{ github.bse_ref }}"
-          echo "[DEBUG] HEAD ref: ${{ github.sha }}"
-          
+          # 원격 저장소에서 최신 main 브랜치를 가져옴.
+          git fetch origin main:origin/main
+ 
+          # 변경된 파일 목록을 가져옴.
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
           
           echo "[DEBUG] Changed files:"
           echo "$CHANGED_FILES"
           
+          # 변경된 파일 중 javame- 로 시작하는 모듈만 추출
           CHANGED_MODULE=$(echo "$CHANGED_FILES" | grep '^javame-' | cut -d '/' -f1 | sort -u | head -n 1)
           
+          # 결과 출력
           echo "Changed module: $CHANGED_MODULE"
           echo "module=$CHANGED_MODULE" >> $GITHUB_OUTPUT
 
