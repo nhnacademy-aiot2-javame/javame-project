@@ -43,7 +43,7 @@ jobs:
         if: steps.changes.outputs.module != ''
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey= javame-project \
+            -Dsonar.projectKey=javame-project \
             -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.inclusions=${{ steps.changes.outputs.module }}/** \
