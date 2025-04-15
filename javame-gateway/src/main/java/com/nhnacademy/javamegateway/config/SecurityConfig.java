@@ -15,6 +15,7 @@ import java.util.List;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http

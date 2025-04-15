@@ -11,6 +11,7 @@ public class AuthController {
 
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
+
     @GetMapping("/login")
     public String loginPage() {
         log.info("test");
