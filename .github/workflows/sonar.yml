@@ -29,7 +29,7 @@ jobs:
           git fetch origin main:origin/main
  
           # 변경된 파일 목록을 가져옴.
-          CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
+          CHANGED_FILES=$(git diff --name-only remotes/origin/main...HEAD)
           
           echo "[DEBUG] Changed files:"
           echo "$CHANGED_FILES"
