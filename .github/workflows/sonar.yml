@@ -24,12 +24,10 @@ jobs:
         id: changes
         run: |
           echo "[DEBUG] Event: ${{ github.event_name }}"
-          
-          # 원격 저장소에서 최신 main 브랜치를 가져옴.
-          git fetch origin main:origin/main
- 
-          # 변경된 파일 목록을 가져옴.
-          CHANGED_FILES=$(git diff --name-only remotes/origin/main...HEAD)
+          echo "[DEBUG] Before: ${{ github.event.before }}"
+          echo "[DEBUG] After: ${{ github.sha }}"
+
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           
           echo "[DEBUG] Changed files:"
           echo "$CHANGED_FILES"
