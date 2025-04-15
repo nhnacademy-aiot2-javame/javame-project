@@ -10,7 +10,6 @@ import java.util.Objects;
  */
 public class JwtTokenDto {
 
-
     /**
      * 토큰 타입 (예: Bearer).
      */

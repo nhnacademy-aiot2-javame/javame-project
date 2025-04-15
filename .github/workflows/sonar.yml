@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Detect changed module
+      - name: Detect changed modules
         id: changes
         run: |
           echo "[DEBUG] Event: ${{ github.event_name }}"
@@ -28,16 +28,15 @@ jobs:
           echo "[DEBUG] After: ${{ github.sha }}"
 
           CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          echo "$CHANGED_FILES" | grep '^javame-' | cut -d '/' -f1 | sort -u > changed-modules.txt
           
           echo "[DEBUG] Changed files:"
-          echo "$CHANGED_FILES"
+          cat changed-modules.txt
           
-          # 변경된 파일 중 javame- 로 시작하는 모듈만 추출
-          CHANGED_MODULE=$(echo "$CHANGED_FILES" | grep '^javame-' | cut -d '/' -f1 | sort -u | head -n 1)
-          
-          # 결과 출력
-          echo "Changed module: $CHANGED_MODULE"
-          echo "module=$CHANGED_MODULE" >> $GITHUB_OUTPUT
+          # GitHub Actions에서 multi-line 출력을 위한 방법
+          echo "modules<<EOF" >> $GITHUB_OUTPUT
+          cat changed-modules.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Run SonarQube scan for changed module
         if: steps.changes.outputs.module != ''
