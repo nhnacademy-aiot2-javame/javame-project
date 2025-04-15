@@ -3,7 +3,7 @@ name: SonarQube Analyze Changed Module
 on:
   push:
     branches:
-      - main #main 브랜치에 push 시 이벤트 트리거
+      - main # main 브랜치에 push 시 이벤트 트리거
 
 jobs:
   detect-and-analyze:
@@ -44,6 +44,6 @@ jobs:
         run: |
           cd ${{ steps.changes.outputs.module }}
           mvn -X clean verify sonar:sonar \
-            -Dsonar.projectKey= javame-project
-            -Dsonar.host.url= ${{ secrets.SONAR_HOST }} 
+            -Dsonar.projectKey=${{ steps.changes.outputs.module }} \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
