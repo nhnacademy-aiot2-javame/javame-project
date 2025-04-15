@@ -1,0 +1,27 @@
+server:
+  port: 10260
+  shutdown: graceful
+
+spring:
+  application:
+    name: eureka-server
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+  security:
+    user:
+      name: admin
+      password: 1234
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://admin:1234@localhost:10260/eureka
+
+
+# 로깅 레벨 (선택)
+logging:
+  level:
+    com.netflix.eureka: INFO
+    org.springframework: INFO
