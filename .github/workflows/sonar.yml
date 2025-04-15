@@ -1,0 +1,37 @@
+name: SonarQube Analyze Changed Module
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  detect-and-analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Detect changed module
+        id: changes
+        run: |
+          git fetch origin main
+          CHANGED_MODULE=$(git diff --name-only origin/main | grep '^javame-' | cut -d '/' -f1 | sort -u | head -n 1)
+          echo "Changed module: $CHANGED_MODULE"
+          echo "module=$CHANGED_MODULE" >> $GITHUB_OUTPUT
+
+      - name: Run SonarQube scan
+        if: steps.changes.outputs.module != ''
+        run: |
+          cd ${{ steps.changes.outputs.module }}
+          mvn clean verify sonar:sonar \
+            -Dsonar.projectKey=${{ steps.changes.outputs.module }} \
+            -Dsonar.host.url=http://s4.java21.net:9000 \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
