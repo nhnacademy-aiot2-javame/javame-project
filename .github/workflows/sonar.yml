@@ -44,6 +44,6 @@ jobs:
         run: |
           cd ${{ steps.changes.outputs.module }}
           mvn -X clean verify sonar:sonar \
-            -Dsonar.projectKey=${{ steps.changes.outputs.module }} \
+            -Dsonar.projectKey= javame-project 
             -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
