@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @ToString
 public class Member {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_no", nullable = false)
