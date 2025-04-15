@@ -43,7 +43,9 @@ jobs:
         if: steps.changes.outputs.module != ''
         run: |
           cd ${{ steps.changes.outputs.module }}
-          mvn clean verify sonar:sonar \
+          mvn -X clean verify sonar:sonar \
             -Dsonar.projectKey= javame-project
             -Dsonar.host.url=http://s4.java21.net:9000 \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+
