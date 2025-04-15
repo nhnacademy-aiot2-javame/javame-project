@@ -10,14 +10,14 @@
         <module name="eureka" />
         <module name="hello" />
       </profile>
-      <profile name="Annotation profile for javame-memberApi" enabled="true">
+      <profile name="Annotation profile for javame-project" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="javame-memberApi" />
         <module name="auth" />
       </profile>
     </annotationProcessing>
