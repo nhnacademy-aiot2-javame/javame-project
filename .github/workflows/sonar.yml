@@ -85,5 +85,3 @@ jobs:
             -Dsonar.projectKey= javame-project
             -Dsonar.host.url= ${{ secrets.SONAR_HOST }} 
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
-
